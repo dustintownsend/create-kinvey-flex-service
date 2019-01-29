@@ -309,7 +309,7 @@ module.exports = function(webpackEnv) {
           use: [
             {
               options: {
-                formatter: require.resolve('react-dev-utils/eslintFormatter'),
+                formatter: require.resolve('./utils/eslintFormatter'),
                 eslintPath: require.resolve('eslint'),
                 // @remove-on-eject-begin
                 baseConfig: {
@@ -366,8 +366,9 @@ module.exports = function(webpackEnv) {
                   [
                     'babel-plugin-named-asset-import',
                     'babel-preset-react-app',
-                    'react-dev-utils',
-                    'react-scripts',
+                    // 'react-dev-utils',
+                    // 'react-scripts',
+                    'kinvey-flex-scripts',
                   ]
                 ),
                 // @remove-on-eject-end
@@ -417,8 +418,9 @@ module.exports = function(webpackEnv) {
                   [
                     'babel-plugin-named-asset-import',
                     'babel-preset-react-app',
-                    'react-dev-utils',
-                    'react-scripts',
+                    // 'react-dev-utils',
+                    // 'react-scripts',
+                    'kinvey-flex-scripts'
                   ]
                 ),
                 // @remove-on-eject-end
