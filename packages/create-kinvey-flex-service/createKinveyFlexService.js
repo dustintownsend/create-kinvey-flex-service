@@ -302,6 +302,7 @@ function install(root, useYarn, usePnp, dependencies, verbose, isOnline) {
       if (usePnp) {
         args.push('--enable-pnp');
       }
+      args.push('--ignore-engines'); // needed for kinvey-flex-sdk.
       [].push.apply(args, dependencies);
 
       // Explicitly set cwd() to work around issues like
