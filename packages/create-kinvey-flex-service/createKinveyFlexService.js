@@ -1,29 +1,22 @@
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //   /!\ DO NOT MODIFY THIS FILE /!\
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-// create-react-app is installed globally on people's computers. This means
+// create-kinvey-flex-service is installed globally on people's computers. This means
 // that it is extremely difficult to have them upgrade the version and
 // because there's only one global version installed, it is very prone to
 // breaking changes.
 //
-// The only job of create-react-app is to init the repository and then
-// forward all the commands to the local version of create-react-app.
+// The only job of create-kinvey-flex-service is to init the repository and then
+// forward all the commands to the local version of create-kinvey-flex-service.
 //
 // If you need to add a new command, please add it to the scripts/ folder.
 //
 // The only reason to modify this file is to add more warnings and
-// troubleshooting information for the `create-react-app` command.
+// troubleshooting information for the `create-kinvey-flex-service` command.
 //
 // Do not make breaking changes! We absolutely don't want to have to
-// tell people to update their global version of create-react-app.
+// tell people to update their global version of create-kinvey-flex-service.
 //
 // Also be careful with new language features.
 // This file must work on Node 6+.
@@ -73,7 +66,7 @@ const program = new commander.Command(packageJson.name)
   .option('--info', 'print environment debug info')
   .option(
     '--scripts-version <alternative-package>',
-    'use a non-standard version of react-scripts'
+    'use a non-standard version of kinvey-flex-scripts'
   )
   .option('--use-npm')
   .option('--use-pnp')
@@ -85,26 +78,26 @@ const program = new commander.Command(packageJson.name)
     console.log(
       `    A custom ${chalk.cyan('--scripts-version')} can be one of:`
     );
-    console.log(`      - a specific npm version: ${chalk.green('0.8.2')}`);
+    console.log(`      - a specific npm version: ${chalk.green('4.0.1')}`);
     console.log(`      - a specific npm tag: ${chalk.green('@next')}`);
     console.log(
       `      - a custom fork published on npm: ${chalk.green(
-        'my-react-scripts'
+        'my-kinvey-flex-scripts'
       )}`
     );
     console.log(
       `      - a local path relative to the current working directory: ${chalk.green(
-        'file:../my-react-scripts'
+        'file:../my-kinvey-flex-scripts'
       )}`
     );
     console.log(
       `      - a .tgz archive: ${chalk.green(
-        'https://mysite.com/my-react-scripts-0.8.2.tgz'
+        'https://mysite.com/my-kinvey-flex-scripts-0.8.2.tgz'
       )}`
     );
     console.log(
       `      - a .tar.gz archive: ${chalk.green(
-        'https://mysite.com/my-react-scripts-0.8.2.tar.gz'
+        'https://mysite.com/my-kinvey-flex-scripts-0.8.2.tar.gz'
       )}`
     );
     console.log(
@@ -116,7 +109,7 @@ const program = new commander.Command(packageJson.name)
     );
     console.log(
       `      ${chalk.cyan(
-        'https://github.com/facebook/create-react-app/issues/new'
+        'https://github.com/dustintownsend/create-kinvey-flex-service/issues/new'
       )}`
     );
     console.log();
@@ -130,9 +123,9 @@ if (program.info) {
       {
         System: ['OS', 'CPU'],
         Binaries: ['Node', 'npm', 'Yarn'],
-        Browsers: ['Chrome', 'Edge', 'Internet Explorer', 'Firefox', 'Safari'],
-        npmPackages: ['react', 'react-dom', 'react-scripts'],
-        npmGlobalPackages: ['create-react-app'],
+        // Browsers: ['Chrome', 'Edge', 'Internet Explorer', 'Firefox', 'Safari'],
+        npmPackages: ['kinvey-flex-sdk', 'kinvey-flex-scripts'],
+        npmGlobalPackages: ['create-kinvey-flex-service'],
       },
       {
         clipboard: false,
@@ -150,7 +143,7 @@ if (typeof projectName === 'undefined') {
   );
   console.log();
   console.log('For example:');
-  console.log(`  ${chalk.cyan(program.name())} ${chalk.green('my-react-app')}`);
+  console.log(`  ${chalk.cyan(program.name())} ${chalk.green('my-flex-service')}`);
   console.log();
   console.log(
     `Run ${chalk.cyan(`${program.name()} --help`)} to see all options.`
@@ -170,11 +163,11 @@ const hiddenProgram = new commander.Command()
   .option(
     '--internal-testing-template <path-to-template>',
     '(internal usage only, DO NOT RELY ON THIS) ' +
-      'use a non-standard application template'
+      'use a non-standard service template'
   )
   .parse(process.argv);
 
-createApp(
+  createService(
   projectName,
   program.verbose,
   program.scriptsVersion,
@@ -184,7 +177,7 @@ createApp(
   hiddenProgram.internalTestingTemplate
 );
 
-function createApp(
+function createService(
   name,
   verbose,
   version,
@@ -194,19 +187,19 @@ function createApp(
   template
 ) {
   const root = path.resolve(name);
-  const appName = path.basename(root);
+  const svcName = path.basename(root);
 
-  checkAppName(appName);
+  checkProjectName(svcName);
   fs.ensureDirSync(name);
   if (!isSafeToCreateProjectIn(root, name)) {
     process.exit(1);
   }
 
-  console.log(`Creating a new React app in ${chalk.green(root)}.`);
+  console.log(`Creating a new Kinvey Flex service in ${chalk.green(root)}.`);
   console.log();
 
   const packageJson = {
-    name: appName,
+    name: svcName,
     version: '0.1.0',
     private: true,
   };
@@ -227,12 +220,12 @@ function createApp(
       chalk.yellow(
         `You are using Node ${
           process.version
-        } so the project will be bootstrapped with an old unsupported version of tools.\n\n` +
-          `Please update to Node 6 or higher for a better, fully supported experience.\n`
+        } \n\nPlease update to Node 6 or higher.\n`
       )
     );
-    // Fall back to latest supported react-scripts on Node 4
-    version = 'react-scripts@0.9.x';
+    process.exit(1);
+    // // Fall back to latest supported react-scripts on Node 4
+    // version = 'react-scripts@0.9.x';
   }
 
   if (!useYarn) {
@@ -243,13 +236,13 @@ function createApp(
           chalk.yellow(
             `You are using npm ${
               npmInfo.npmVersion
-            } so the project will be bootstrapped with an old unsupported version of tools.\n\n` +
-              `Please update to npm 3 or higher for a better, fully supported experience.\n`
+            } Please update to npm 3 or higher.\n`
           )
         );
       }
-      // Fall back to latest supported react-scripts for npm 3
-      version = 'react-scripts@0.9.x';
+      process.exit(1);
+      // // Fall back to latest supported react-scripts for npm 3
+      // version = 'react-scripts@0.9.x';
     }
   } else if (usePnp) {
     const yarnInfo = checkYarnVersion();
@@ -276,7 +269,7 @@ function createApp(
 
   run(
     root,
-    appName,
+    svcName,
     version,
     verbose,
     originalDirectory,
@@ -360,7 +353,7 @@ function install(root, useYarn, usePnp, dependencies, verbose, isOnline) {
 
 function run(
   root,
-  appName,
+  svcName,
   version,
   verbose,
   originalDirectory,
@@ -370,14 +363,13 @@ function run(
   useTypescript
 ) {
   const packageToInstall = getInstallPackage(version, originalDirectory);
-  const allDependencies = ['react', 'react-dom', packageToInstall];
+  const allDependencies = ['kinvey-flex-sdk', packageToInstall];
   if (useTypescript) {
     // TODO: get user's node version instead of installing latest
     allDependencies.push(
       '@types/node',
-      '@types/react',
-      '@types/react-dom',
-      '@types/jest',
+      // '@types/kinvey-flex-sdk',
+      // '@types/jest',
       'typescript'
     );
   }
@@ -394,8 +386,7 @@ function run(
       const isOnline = info.isOnline;
       const packageName = info.packageName;
       console.log(
-        `Installing ${chalk.cyan('react')}, ${chalk.cyan(
-          'react-dom'
+        `Installing ${chalk.cyan('kinvey-flex-sdk')}
         )}, and ${chalk.cyan(packageName)}...`
       );
       console.log();
@@ -422,21 +413,21 @@ function run(
           cwd: process.cwd(),
           args: nodeArgs,
         },
-        [root, appName, verbose, originalDirectory, template],
+        [root, svcName, verbose, originalDirectory, template],
         `
         var init = require('${packageName}/scripts/init.js');
         init.apply(null, JSON.parse(process.argv[1]));
       `
       );
 
-      if (version === 'react-scripts@0.9.x') {
-        console.log(
-          chalk.yellow(
-            `\nNote: the project was bootstrapped with an old unsupported version of tools.\n` +
-              `Please update to Node >=6 and npm >=3 to get supported tools in new projects.\n`
-          )
-        );
-      }
+      // if (version === 'kinvey-flex-scripts@0.0.x') {
+      //   console.log(
+      //     chalk.yellow(
+      //       `\nNote: the project was bootstrapped with an old unsupported version of tools.\n` +
+      //         `Please update to Node >=6 and npm >=3 to get supported tools in new projects.\n`
+      //     )
+      //   );
+      // }
     })
     .catch(reason => {
       console.log();
@@ -465,7 +456,7 @@ function run(
       if (!remainingFiles.length) {
         // Delete target folder if empty
         console.log(
-          `Deleting ${chalk.cyan(`${appName}/`)} from ${chalk.cyan(
+          `Deleting ${chalk.cyan(`${svcName}/`)} from ${chalk.cyan(
             path.resolve(root, '..')
           )}`
         );
@@ -479,7 +470,6 @@ function run(
 
 function getInstallPackage(version, originalDirectory) {
   let packageToInstall = 'kinvey-flex-scripts';
-  // let packageToInstall = 'react-scripts';
   const validSemver = semver.valid(version);
   if (validSemver) {
     packageToInstall += `@${validSemver}`;
@@ -660,13 +650,13 @@ function checkNodeVersion(packageName) {
     process.exit(1);
   }
 }
-// TODO: update this
-function checkAppName(appName) {
-  const validationResult = validateProjectName(appName);
+
+function checkProjectName(name) {
+  const validationResult = validateProjectName(name);
   if (!validationResult.validForNewPackages) {
     console.error(
       `Could not create a project called ${chalk.red(
-        `"${appName}"`
+        `"${name}"`
       )} because of npm naming restrictions:`
     );
     printValidationResults(validationResult.errors);
@@ -675,12 +665,12 @@ function checkAppName(appName) {
   }
 
   // TODO: there should be a single place that holds the dependencies
-  const dependencies = ['react', 'react-dom', 'react-scripts'].sort();
-  if (dependencies.indexOf(appName) >= 0) {
+  const dependencies = ['kinvey-flex-sdk', 'kinvey-flex-scripts'].sort();
+  if (dependencies.indexOf(name) >= 0) {
     console.error(
       chalk.red(
         `We cannot create a project called ${chalk.green(
-          appName
+          name
         )} because a dependency with the same name exists.\n` +
           `Due to the way npm works, the following names are not allowed:\n\n`
       ) +
@@ -728,8 +718,7 @@ function setCaretRangeForRuntimeDeps(packageName) {
     process.exit(1);
   }
 
-  // makeCaretRange(packageJson.dependencies, 'react');
-  // makeCaretRange(packageJson.dependencies, 'react-dom');
+  makeCaretRange(packageJson.dependencies, 'kinvey-flex-sdk');
 
   fs.writeFileSync(packagePath, JSON.stringify(packageJson, null, 2) + os.EOL);
 }
@@ -816,6 +805,7 @@ function getProxy() {
     }
   }
 }
+
 function checkThatNpmCanReadCwd() {
   const cwd = process.cwd();
   let childOutput = null;
