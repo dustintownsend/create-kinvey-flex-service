@@ -1,9 +1,9 @@
 {
   "name": "create-kinvey-flex-service",
-  "version": "0.0.1",
+  "version": "0.1.0-alpha.0",
   "main": "index.js",
   "license": "MIT",
-  "bin":{
+  "bin": {
     "create-kinvey-flex-service": "./index.js"
   },
   "dependencies": {
