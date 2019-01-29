@@ -7,7 +7,16 @@
     "kinvey-flex-scripts": "./bin/kinvey-flex-scripts.js"
   },
   "dependencies": {
+    "address": "^1.0.3",
+    "bfj": "^6.1.1",
     "chalk": "^2.4.2",
-    "fs-extra": "^7.0.1"
+    "detect-port-alt": "^1.1.6",
+    "dotenv-expand": "^4.2.0",
+    "fs-extra": "^7.0.1",
+    "inquirer": "^6.2.1",
+    "pnp-webpack-plugin": "^1.2.1",
+    "postcss-flexbugs-fixes": "^4.1.0",
+    "postcss-preset-env": "^6.5.0",
+    "postcss-safe-parser": "^4.0.1"
   }
 }
