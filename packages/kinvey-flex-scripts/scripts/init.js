@@ -14,8 +14,7 @@ process.on('unhandledRejection', err => {
 
 // svc is short for service
 
-// module.exports =
-const init = function(
+module.exports = function(
   svcPath,
   svcName,
   verbose,
@@ -199,12 +198,3 @@ const init = function(
   console.log();
   console.log('Happy hacking!');
 }
-
-init('/Users/dustin/Code/kinvey-flex/test', 'test-name', false, process.cwd(), 'template')
-
-
-// const ownPath = path.dirname(
-//   require.resolve(path.join(__dirname, '..', 'package.json'))
-// );
-// console.log(ownPath);
-

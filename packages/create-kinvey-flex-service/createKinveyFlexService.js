@@ -478,8 +478,8 @@ function run(
 }
 
 function getInstallPackage(version, originalDirectory) {
-  // let packageToInstall = 'kinvey-flex-scripts';
-  let packageToInstall = 'react-scripts';
+  let packageToInstall = 'kinvey-flex-scripts';
+  // let packageToInstall = 'react-scripts';
   const validSemver = semver.valid(version);
   if (validSemver) {
     packageToInstall += `@${validSemver}`;
