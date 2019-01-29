@@ -1,0 +1,1 @@
+This service was bootstrapped with Create Kinvey Flex Service.
