@@ -5,6 +5,7 @@ const path = require('path');
 const os = require('os');
 const chalk = require('chalk');
 const spawn = require('cross-spawn');
+const execSync = require('child_process').execSync;
 const { defaultBrowsers } = require('./utils/browsersHelper');
 
 // Makes the script crash on unhandled rejections instead of silently
@@ -33,6 +34,58 @@ module.exports = function(
   svcPackage.dependencies = svcPackage.dependencies || {};
 
   const useTypeScript = svcPackage.dependencies['typescript'] != null;
+
+  function isInGitRepository() {
+    try {
+      execSync('git rev-parse --is-inside-work-tree', { stdio: 'ignore' });
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function isInMercurialRepository() {
+    try {
+      execSync('hg --cwd . root', { stdio: 'ignore' });
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function tryGitInit(appPath) {
+    let didInit = false;
+    try {
+      execSync('git --version', { stdio: 'ignore' });
+      if (isInGitRepository() || isInMercurialRepository()) {
+        return false;
+      }
+
+      execSync('git init', { stdio: 'ignore' });
+      didInit = true;
+
+      execSync('git add -A', { stdio: 'ignore' });
+      execSync('git commit -m "Initial commit from Create React App"', {
+        stdio: 'ignore',
+      });
+      return true;
+    } catch (e) {
+      if (didInit) {
+        // If we successfully initialized but couldn't commit,
+        // maybe the commit author config is not set.
+        // In the future, we might supply our own committer
+        // like Ember CLI does, but for now, let's just
+        // remove the Git files to avoid a half-done state.
+        try {
+          // unlinkSync() doesn't work on directories.
+          fs.removeSync(path.join(appPath, '.git'));
+        } catch (removeErr) {
+          // Ignore.
+        }
+      }
+      return false;
+    }
+  }
 
   // Setup the script rules
   svcPackage.scripts = {
@@ -139,14 +192,14 @@ module.exports = function(
   }
   // }
 
-  // if (useTypeScript) {
+  if (useTypeScript) {
     // verifyTypeScriptSetup();
-  // }
+  }
 
-  // if (tryGitInit(svcPath)) {
-  //   console.log();
-  //   console.log('Initialized a git repository.');
-  // }
+  if (tryGitInit(svcPath)) {
+    console.log();
+    console.log('Initialized a git repository.');
+  }
 
   // Display the most elegant way to cd.
   // This needs to handle an undefined originalDirectory for
