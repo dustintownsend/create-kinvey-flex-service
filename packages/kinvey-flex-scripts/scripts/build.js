@@ -41,7 +41,6 @@ const configFactory = require('../config/webpack.config');
 const paths = require('../config/paths');
 const checkRequiredFiles = require('./utils/checkRequiredFiles');
 const formatWebpackMessages = require('./utils/formatWebpackMessages');
-const printHostingInstructions = require('./utils/printHostingInstructions');
 const FileSizeReporter = require('./utils/FileSizeReporter');
 const printBuildError = require('./utils/printBuildError');
 
@@ -117,17 +116,23 @@ checkBrowsers(paths.appPath, isInteractive)
       );
       console.log();
 
-      const appPackage = require(paths.appPackageJson);
-      const publicUrl = paths.publicUrl;
-      const publicPath = config.output.publicPath;
+      // const appPackage = require(paths.appPackageJson);
+      // const publicUrl = paths.publicUrl;
+      // const publicPath = config.output.publicPath;
       const buildFolder = path.relative(process.cwd(), paths.appBuild);
-      printHostingInstructions(
-        appPackage,
-        publicUrl,
-        publicPath,
-        buildFolder,
-        useYarn
-      );
+      console.log(`The ${chalk.cyan(buildFolder)} folder is ready to be deployed.`);
+      console.log();
+
+      console.log('To run locally, run:');
+      console.log();
+      console.log(`  ${chalk.cyan('node')} ${buildFolder} `);
+      console.log();
+
+
+      console.log('To deploy, run:');
+      console.log();
+      console.log(`  ${chalk.cyan(useYarn ? 'yarn' : 'npm')} run deploy`);
+      console.log();
     },
     err => {
       console.log(chalk.red('Failed to compile.\n'));
