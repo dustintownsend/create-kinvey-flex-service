@@ -40,6 +40,7 @@ module.exports = function(
     build: 'kinvey-flex-scripts build',
     test: 'kinvey-flex-scripts test',
     eject: 'kinvey-flex-scripts eject',
+    deploy: 'kinvey-flex-scripts deploy'
   };
 
   // Setup the eslint config
