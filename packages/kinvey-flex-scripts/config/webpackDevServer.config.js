@@ -9,9 +9,9 @@
 'use strict';
 
 // const errorOverlayMiddleware = require('react-dev-utils/errorOverlayMiddleware');
-// const evalSourceMapMiddleware = require('react-dev-utils/evalSourceMapMiddleware');
+// const evalSourceMapMiddleware = require('./utils/evalSourceMapMiddleware');
 // const noopServiceWorkerMiddleware = require('react-dev-utils/noopServiceWorkerMiddleware');
-// const ignoredFiles = require('react-dev-utils/ignoredFiles');
+const ignoredFiles = require('./utils/ignoredFiles');
 const paths = require('./paths');
 const fs = require('fs');
 
@@ -57,7 +57,7 @@ module.exports = function(proxy, allowedHost) {
     // for files like `favicon.ico`, `manifest.json`, and libraries that are
     // for some reason broken when imported through Webpack. If you just want to
     // use an image, put it in `src` and `import` it from JavaScript instead.
-    contentBase: paths.appPublic,
+    // contentBase: paths.appPublic,
     // By default files from `contentBase` will not trigger a page reload.
     watchContentBase: true,
     // Enable hot reloading server. It will provide /sockjs-node/ endpoint
@@ -65,7 +65,7 @@ module.exports = function(proxy, allowedHost) {
     // updated. The WebpackDevServer client is included as an entry point
     // in the Webpack development configuration. Note that only changes
     // to CSS are currently hot reloaded. JS changes will refresh the browser.
-    hot: true,
+    // hot: true,
     // It is important to tell WebpackDevServer to use the same "root" path
     // as we specified in the config. In development, we always serve from /.
     publicPath: '/',
@@ -77,7 +77,7 @@ module.exports = function(proxy, allowedHost) {
     // src/node_modules is not ignored to support absolute imports
     // https://github.com/facebook/create-react-app/issues/1065
     watchOptions: {
-      // ignored: ignoredFiles(paths.appSrc),
+      ignored: ignoredFiles(paths.appSrc),
     },
     // Enable HTTPS if the HTTPS environment variable is set to 'true'
     https: protocol === 'https',
@@ -91,10 +91,15 @@ module.exports = function(proxy, allowedHost) {
     public: allowedHost,
     proxy,
     before(app, server) {
+      console.log('before', app, server);
       if (fs.existsSync(paths.proxySetup)) {
         // This registers user provided middleware for proxy reasons
         require(paths.proxySetup)(app);
       }
+
+      app.get('/_flexFunctions/*', (req, res) => {
+        return res;
+      });
 
       // This lets us fetch source contents from webpack for the error overlay
       // app.use(evalSourceMapMiddleware(server));

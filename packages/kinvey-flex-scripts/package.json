@@ -57,6 +57,13 @@
     "webpack": "^4.29.0",
     "webpack-dev-server": "^3.1.14",
     "webpack-manifest-plugin": "^2.0.4",
-    "workbox-webpack-plugin": "^3.6.3"
+    "webpack-node-externals": "^1.7.2",
+    "workbox-webpack-plugin": "^3.6.3",
+    "eslint-config-kinvey-flex-service": "",
+    "babel-preset-kinvey-flex-service": ""
+  },
+  "devDependencies": {
+    "lodash.merge": "^4.6.1",
+    "nodemon-webpack-plugin": "^4.0.7"
   }
 }

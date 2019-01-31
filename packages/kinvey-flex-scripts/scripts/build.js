@@ -36,6 +36,7 @@ const chalk = require('chalk');
 const fs = require('fs-extra');
 const webpack = require('webpack');
 const bfj = require('bfj');
+const os = require('os');
 const configFactory = require('../config/webpack.config');
 const paths = require('../config/paths');
 const checkRequiredFiles = require('./utils/checkRequiredFiles');
@@ -56,7 +57,7 @@ const WARN_AFTER_CHUNK_GZIP_SIZE = 1024 * 1024;
 const isInteractive = process.stdout.isTTY;
 
 // Warn and crash if required files are missing
-if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
+if (!checkRequiredFiles([paths.appIndexJs])) {
   process.exit(1);
 }
 
@@ -82,6 +83,8 @@ checkBrowsers(paths.appPath, isInteractive)
     fs.emptyDirSync(paths.appBuild);
     // Merge with the public folder
     copyPublicFolder();
+
+    makeBuildPkg();
     // Start the webpack build
     return build(previousFileSizes);
   })
@@ -190,7 +193,7 @@ function build(previousFileSizes) {
       };
       if (writeStatsJson) {
         return bfj
-          .write(paths.appBuild + '/bundle-stats.json', stats.toJson())
+          .write(paths.appBuild + '/bundle-stats.json', stats.toJson(), {})
           .then(() => resolve(resolveArgs))
           .catch(error => reject(new Error(error)));
       }
@@ -201,8 +204,25 @@ function build(previousFileSizes) {
 }
 
 function copyPublicFolder() {
+  if (!fs.existsSync(paths.appPublic)) { return; }
   fs.copySync(paths.appPublic, paths.appBuild, {
     dereference: true,
     filter: file => file !== paths.appHtml,
   });
+}
+
+function makeBuildPkg() {
+  const appPackage = require(paths.appPackageJson);
+  const buildPackage = {
+    name: appPackage.name,
+    version: appPackage.version,
+    dependencies: appPackage.dependencies,
+    main: 'bundle.js',
+    license: appPackage.license || 'UNLICENSED'
+  }
+
+  fs.writeFileSync(
+    paths.buildPackageJson,
+    JSON.stringify(buildPackage, null, 2) + os.EOL
+  );
 }

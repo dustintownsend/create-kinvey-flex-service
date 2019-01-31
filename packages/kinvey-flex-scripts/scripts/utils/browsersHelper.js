@@ -14,10 +14,13 @@ const pkgUp = require('pkg-up');
 const fs = require('fs');
 
 const defaultBrowsers = [
-  '>0.2%',
-  'not dead',
-  'not ie <= 11',
-  'not op_mini all',
+  // '>0.2%',
+  // 'not dead',
+  // 'not ie <= 11',
+  // 'not op_mini all',
+  'node 6',
+  'node 8',
+  'node 10'
 ];
 
 function shouldSetBrowsers(isInteractive) {

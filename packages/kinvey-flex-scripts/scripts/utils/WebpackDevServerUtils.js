@@ -133,7 +133,7 @@ function createCompiler(webpack, config, appName, urls, useYarn) {
   // "invalid" is short for "bundle invalidated", it doesn't imply any errors.
   compiler.hooks.invalid.tap('invalid', () => {
     if (isInteractive) {
-      clearConsole();
+      // clearConsole();
     }
     console.log('Compiling...');
   });
@@ -144,7 +144,7 @@ function createCompiler(webpack, config, appName, urls, useYarn) {
   // Whether or not you have warnings or errors, you will get this event.
   compiler.hooks.done.tap('done', stats => {
     if (isInteractive) {
-      clearConsole();
+      // clearConsole();
     }
 
     // We have switched off the default Webpack output in WebpackDevServer
@@ -268,6 +268,7 @@ function onProxyError(proxy) {
 }
 
 function prepareProxy(proxy, appPublicFolder) {
+  console.log('prepareProxy');
   // `proxy` lets you specify alternate servers for specific requests.
   if (!proxy) {
     return undefined;
@@ -287,6 +288,7 @@ function prepareProxy(proxy, appPublicFolder) {
 
   // If proxy is specified, let it handle any request except for files in the public folder.
   function mayProxy(pathname) {
+    console.log('mayProxy');
     const maybePublicPath = path.resolve(appPublicFolder, pathname.slice(1));
     return !fs.existsSync(maybePublicPath);
   }
@@ -357,7 +359,7 @@ function choosePort(host, defaultPort) {
             ? `Admin permissions are required to run a server on a port below 1024.`
             : `Something is already running on port ${defaultPort}.`;
         if (isInteractive) {
-          clearConsole();
+          // clearConsole();
           const existingProcess = getProcessForPort(defaultPort);
           const question = {
             type: 'confirm',

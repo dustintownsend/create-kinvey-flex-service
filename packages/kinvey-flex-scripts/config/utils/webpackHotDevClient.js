@@ -95,6 +95,7 @@ function clearOutdatedErrors() {
 
 // Successful compilation.
 function handleSuccess() {
+  console.log('handle success');
   clearOutdatedErrors();
 
   var isHotUpdate = !isFirstCompilation;
@@ -113,6 +114,7 @@ function handleSuccess() {
 
 // Compilation with warnings (e.g. ESLint).
 function handleWarnings(warnings) {
+  console.log('handleWarnings');
   clearOutdatedErrors();
 
   var isHotUpdate = !isFirstCompilation;
@@ -185,12 +187,14 @@ function handleErrors(errors) {
 
 // There is a newer version of the code available.
 function handleAvailableHash(hash) {
+  console.log('handleAvailableHas');
   // Update last known compilation hash.
   mostRecentCompilationHash = hash;
 }
 
 // Handle messages from the server.
 connection.onmessage = function(e) {
+  console.info('onmessage', e);
   var message = JSON.parse(e.data);
   switch (message.type) {
     case 'hash':

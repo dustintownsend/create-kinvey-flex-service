@@ -4,6 +4,8 @@ const fs = require('fs-extra'); // maybe use fs-extra
 const path = require('path');
 const os = require('os');
 const chalk = require('chalk');
+const spawn = require('cross-spawn');
+const { defaultBrowsers } = require('./utils/browsersHelper');
 
 // Makes the script crash on unhandled rejections instead of silently
 // ignoring them. In the future, promise rejections that are not handled will
@@ -21,15 +23,25 @@ module.exports = function(
   originalDirectory,
   template
 ) {
+  console.log('init',svcPath,
+  svcName,
+  verbose,
+  originalDirectory,
+  template)
   const ownPath = path.dirname(
     require.resolve(path.join(__dirname, '..', 'package.json'))
   );
+  console.log('ownPath', ownPath);
 
   const svcPackage = require(path.join(svcPath, 'package.json'));
   const useYarn = fs.existsSync(path.join(svcPath, 'yarn.lock'));
 
+  console.log('svcPackage', svcPackage);
+  console.log('svcPackage.dependencies', svcPackage.dependencies);
   // Copy over some of the devDependencies
   svcPackage.dependencies = svcPackage.dependencies || {};
+  console.log('svcPackage.dependencies', svcPackage.dependencies);
+
 
   const useTypeScript = svcPackage.dependencies['typescript'] != null;
 
@@ -43,11 +55,11 @@ module.exports = function(
 
   // Setup the eslint config
   svcPackage.eslintConfig = {
-    // extends: 'kinvey-flex-service',
+    extends: 'kinvey-flex-service',
   };
 
   // Setup the browsers list
-  // svcPackage.browserslist = defaultBrowsers;
+  svcPackage.browserslist = defaultBrowsers;
 
   fs.writeFileSync(
     path.join(svcPath, 'package.json'),
@@ -94,18 +106,19 @@ module.exports = function(
     }
   }
 
-  // let command;
+  let command;
   let args;
   args = [];
 
-  // if (useYarn) {
-  //   command = 'yarnpkg';
-  //   args = ['add'];
-  // } else {
-  //   command = 'npm';
-  //   args = ['install', '--save', verbose && '--verbose'].filter(e => e);
-  // }
-  // args.push('react', 'react-dom');
+  if (useYarn) {
+    command = 'yarnpkg';
+    args = ['add'];
+    // args.push('--ignore-engines');
+  } else {
+    command = 'npm';
+    args = ['install', '--save', verbose && '--verbose'].filter(e => e);
+  }
+  args.push('kinvey-flex-sdk');
 
   // Install additional template dependencies, if present
   const templateDependenciesPath = path.join(
@@ -126,14 +139,14 @@ module.exports = function(
   // which doesn't install react and react-dom along with react-scripts
   // or template is presetend (via --internal-testing-template)
   // if (!isReactInstalled(svcPackage) || template) {
-  //   console.log(`Installing react and react-dom using ${command}...`);
-  //   console.log();
+  console.log(`Installing kinvey-flex-sdk using ${command}...`);
+  console.log();
 
-  //   const proc = spawn.sync(command, args, { stdio: 'inherit' });
-  //   if (proc.status !== 0) {
-  //     console.error(`\`${command} ${args.join(' ')}\` failed`);
-  //     return;
-  //   }
+  const proc = spawn.sync(command, args, { stdio: 'inherit' });
+  if (proc.status !== 0) {
+    console.error(`\`${command} ${args.join(' ')}\` failed`);
+    return;
+  }
   // }
 
   // if (useTypeScript) {

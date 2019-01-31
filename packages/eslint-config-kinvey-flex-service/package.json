@@ -1,0 +1,12 @@
+{
+  "name": "eslint-config-kinvey-flex-service",
+  "version": "0.0.1",
+  "license": "MIT",
+  "files": [
+    "index.js"
+  ],
+  "peerDependencies": {
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.12.1"
+  }
+}

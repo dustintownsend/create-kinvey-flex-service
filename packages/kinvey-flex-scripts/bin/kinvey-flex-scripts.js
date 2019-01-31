@@ -18,13 +18,19 @@ const scriptIndex = args.findIndex(
 const script = scriptIndex === -1 ? args[0] : args[scriptIndex];
 const nodeArgs = scriptIndex > 0 ? args.slice(0, scriptIndex) : [];
 
+let nodeCmd = 'node';
+if (script === 'start') {
+  nodeCmd = 'nodemon';
+  console.log(script, nodeCmd);
+}
+
 switch (script) {
   case 'build':
   case 'eject':
   case 'start':
   case 'test': {
     const result = spawn.sync(
-      'node',
+      nodeCmd,
       nodeArgs
         .concat(require.resolve('../scripts/' + script))
         .concat(args.slice(scriptIndex + 1)),

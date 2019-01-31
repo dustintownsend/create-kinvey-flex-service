@@ -289,7 +289,8 @@ function shouldUseYarn() {
   }
 }
 
-function install(root, useYarn, usePnp, dependencies, verbose, isOnline) {
+function install(root, useYarn, usePnp, dependencies, verbose, isOnline, isDev) {
+  console.log('install', root, useYarn, usePnp, dependencies, verbose, isOnline, isDev)
   return new Promise((resolve, reject) => {
     let command;
     let args;
@@ -301,6 +302,9 @@ function install(root, useYarn, usePnp, dependencies, verbose, isOnline) {
       }
       if (usePnp) {
         args.push('--enable-pnp');
+      }
+      if (isDev) {
+        args.push('--dev')
       }
       args.push('--ignore-engines'); // needed for kinvey-flex-sdk.
       [].push.apply(args, dependencies);
@@ -327,6 +331,10 @@ function install(root, useYarn, usePnp, dependencies, verbose, isOnline) {
         '--loglevel',
         'error',
       ].concat(dependencies);
+
+      if (isDev) {
+        args.push('--save-dev');
+      }
 
       if (usePnp) {
         console.log(chalk.yellow("NPM doesn't support PnP."));
@@ -363,16 +371,30 @@ function run(
   usePnp,
   useTypescript
 ) {
+  console.log('run',root,
+  svcName,
+  version,
+  verbose,
+  originalDirectory,
+  template,
+  useYarn,
+  usePnp,
+  useTypescript)
   const packageToInstall = getInstallPackage(version, originalDirectory);
-  const allDependencies = ['kinvey-flex-sdk', packageToInstall];
+  // const allDependencies = ['kinvey-flex-sdk', packageToInstall];
+  // const allDependencies = {
+  //   deps: ['kinvey-flex-sdk'],
+  //   devDeps: [packageToInstall],
+  // }
+  const allDependencies = [packageToInstall];
   if (useTypescript) {
     // TODO: get user's node version instead of installing latest
-    allDependencies.push(
-      '@types/node',
+    // allDependencies.push(
+      // '@types/node',
       // '@types/kinvey-flex-sdk',
       // '@types/jest',
-      'typescript'
-    );
+    //   'typescript'
+    // );
   }
 
   console.log('Installing packages. This might take a couple of minutes.');
@@ -386,11 +408,13 @@ function run(
     .then(info => {
       const isOnline = info.isOnline;
       const packageName = info.packageName;
-      console.log(
-        `Installing ${chalk.cyan('kinvey-flex-sdk')}
-        )}, and ${chalk.cyan(packageName)}...`
-      );
+      // console.log(
+      //   `Installing ${chalk.cyan('kinvey-flex-sdk')}
+      //   )}, and ${chalk.cyan(packageName)}...`
+      // );
+      console.log(`Installing ${chalk.cyan(packageName)}...`);
       console.log();
+      // return packageName;
 
       return install(
         root,
@@ -398,8 +422,10 @@ function run(
         usePnp,
         allDependencies,
         verbose,
-        isOnline
-      ).then(() => packageName);
+        isOnline,
+        true
+      )
+      .then(() => packageName);
     })
     .then(async packageName => {
       checkNodeVersion(packageName);
@@ -682,44 +708,46 @@ function checkProjectName(name) {
   }
 }
 
-function makeCaretRange(dependencies, name) {
-  const version = dependencies[name];
+// function makeCaretRange(dependencies, name) {
+//   const version = dependencies[name];
 
-  if (typeof version === 'undefined') {
-    console.error(chalk.red(`Missing ${name} dependency in package.json`));
-    process.exit(1);
-  }
+//   if (typeof version === 'undefined') {
+//     console.error(chalk.red(`Missing ${name} dependency in package.json`));
+//     process.exit(1);
+//   }
 
-  let patchedVersion = `^${version}`;
+//   let patchedVersion = `^${version}`;
 
-  if (!semver.validRange(patchedVersion)) {
-    console.error(
-      `Unable to patch ${name} dependency version because version ${chalk.red(
-        version
-      )} will become invalid ${chalk.red(patchedVersion)}`
-    );
-    patchedVersion = version;
-  }
+//   if (!semver.validRange(patchedVersion)) {
+//     console.error(
+//       `Unable to patch ${name} dependency version because version ${chalk.red(
+//         version
+//       )} will become invalid ${chalk.red(patchedVersion)}`
+//     );
+//     patchedVersion = version;
+//   }
 
-  dependencies[name] = patchedVersion;
-}
+//   dependencies[name] = patchedVersion;
+// }
 
 function setCaretRangeForRuntimeDeps(packageName) {
   const packagePath = path.join(process.cwd(), 'package.json');
   const packageJson = require(packagePath);
 
   if (typeof packageJson.dependencies === 'undefined') {
-    console.error(chalk.red('Missing dependencies in package.json'));
-    process.exit(1);
+    packageJson.dependencies = {};
+  }
+  if (typeof packageJson.devDependencies === 'undefined') {
+    packageJson.devDependencies = {};
   }
 
-  const packageVersion = packageJson.dependencies[packageName];
+  const packageVersion = packageJson.dependencies[packageName] || packageJson.devDependencies[packageName];
   if (typeof packageVersion === 'undefined') {
     console.error(chalk.red(`Unable to find ${packageName} in package.json`));
     process.exit(1);
   }
 
-  makeCaretRange(packageJson.dependencies, 'kinvey-flex-sdk');
+  // makeCaretRange(packageJson.dependencies, 'kinvey-flex-sdk');
 
   fs.writeFileSync(packagePath, JSON.stringify(packageJson, null, 2) + os.EOL);
 }

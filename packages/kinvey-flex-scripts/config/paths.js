@@ -90,6 +90,8 @@ module.exports = {
   appNodeModules: resolveApp('node_modules'),
   publicUrl: getPublicUrl(resolveApp('package.json')),
   servedPath: getServedPath(resolveApp('package.json')),
+  eslintConfig: resolveApp('.eslintrc'),
+  buildPackageJson: resolveApp('build/package.json')
 };
 
 // @remove-on-eject-begin
@@ -117,6 +119,8 @@ module.exports = {
   ownNodeModules: resolveOwn('node_modules'), // This is empty on npm 3
   appTypeDeclarations: resolveApp('src/react-app-env.d.ts'),
   ownTypeDeclarations: resolveOwn('lib/react-app.d.ts'),
+  eslintConfig: resolveApp('.eslintrc.json'),
+  buildPackageJson: resolveApp('build/package.json')
 };
 
 const ownPackageJson = require('../package.json');
