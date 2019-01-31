@@ -66,6 +66,10 @@ if (process.env.HOST) {
   console.log();
 }
 
+if (!fs.existsSync(path.join(paths.appPath, '.env'))) {
+  console.log(chalk.red('No .env file found.'));
+}
+
 // We require that you explictly set browsers and do not fall back to
 // browserslist defaults.
 const { checkBrowsers } = require('./utils/browsersHelper');
