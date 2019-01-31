@@ -38,8 +38,8 @@ module.exports = function(
   svcPackage.scripts = {
     start: 'kinvey-flex-scripts start',
     build: 'kinvey-flex-scripts build',
-    test: 'kinvey-flex-scripts test',
-    eject: 'kinvey-flex-scripts eject',
+    // test: 'kinvey-flex-scripts test',
+    // eject: 'kinvey-flex-scripts eject',
     deploy: 'kinvey-flex-scripts deploy'
   };
 
@@ -173,18 +173,23 @@ module.exports = function(
   );
   console.log('    Bundles the app into static files for production.');
   console.log();
-  console.log(chalk.cyan(`  ${displayedCommand} test`));
-  console.log('    Starts the test runner.');
+  console.log(
+    chalk.cyan(`  ${displayedCommand} ${useYarn ? '' : 'run '}deploy`)
+  );
+  console.log('    Deploys the bundled service to Kinvey.');
   console.log();
-  console.log(
-    chalk.cyan(`  ${displayedCommand} ${useYarn ? '' : 'run '}eject`)
-  );
-  console.log(
-    '    Removes this tool and copies build dependencies, configuration files'
-  );
-  console.log(
-    '    and scripts into the app directory. If you do this, you can’t go back!'
-  );
+  // console.log(chalk.cyan(`  ${displayedCommand} test`));
+  // console.log('    Starts the test runner.');
+  // console.log();
+  // console.log(
+  //   chalk.cyan(`  ${displayedCommand} ${useYarn ? '' : 'run '}eject`)
+  // );
+  // console.log(
+  //   '    Removes this tool and copies build dependencies, configuration files'
+  // );
+  // console.log(
+  //   '    and scripts into the app directory. If you do this, you can’t go back!'
+  // );
   console.log();
   console.log('We suggest that you begin by typing:');
   console.log();
