@@ -290,7 +290,6 @@ function shouldUseYarn() {
 }
 
 function install(root, useYarn, usePnp, dependencies, verbose, isOnline, isDev) {
-  console.log('install', root, useYarn, usePnp, dependencies, verbose, isOnline, isDev)
   return new Promise((resolve, reject) => {
     let command;
     let args;
