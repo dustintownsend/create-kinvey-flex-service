@@ -33,6 +33,7 @@
     "identity-obj-proxy": "^3.0.0",
     "inquirer": "^6.2.1",
     "is-root": "^2.0.0",
+    "kinvey-cli-wrapper": "^0.0.1",
     "lodash.merge": "^4.6.1",
     "pkg-up": "^2.0.0",
     "recursive-readdir": "^2.2.2",
