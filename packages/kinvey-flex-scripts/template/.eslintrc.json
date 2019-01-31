@@ -1,0 +1,6 @@
+{
+  "extends": "./package.json",
+  "rules": {
+    "no-console":"warn"
+  }
+}
