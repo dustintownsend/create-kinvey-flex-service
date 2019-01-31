@@ -32,9 +32,9 @@ module.exports = function(webpackEnv) {
   // Webpack uses `publicPath` to determine where the app is being served from.
   // It requires a trailing slash, or the file assets will get an incorrect path.
   // In development, we always serve from the root. This makes config easier.
-  const publicPath = isEnvProduction
-    ? paths.servedPath
-    : isEnvDevelopment && '/';
+  // const publicPath = isEnvProduction
+  //   ? paths.servedPath
+  //   : isEnvDevelopment && '/';
   // Some apps do not use client-side routing with pushState.
   // For these, "homepage" can be set to "." to enable relative asset paths.
   // const shouldUseRelativeAssetPaths = publicPath === './';
@@ -42,11 +42,11 @@ module.exports = function(webpackEnv) {
   // `publicUrl` is just like `publicPath`, but we will provide it to our app
   // as %PUBLIC_URL% in `index.html` and `process.env.PUBLIC_URL` in JavaScript.
   // Omit trailing slash as %PUBLIC_URL%/xyz looks better than %PUBLIC_URL%xyz.
-  const publicUrl = isEnvProduction
-    ? publicPath.slice(0, -1)
-    : isEnvDevelopment && '';
+  // const publicUrl = isEnvProduction
+  //   ? publicPath.slice(0, -1)
+  //   : isEnvDevelopment && '';
   // Get environment variables to inject into our app.
-  const env = getClientEnvironment(publicUrl);
+  const env = getClientEnvironment();
 
   return {
     mode: isEnvProduction ? 'production' : isEnvDevelopment && 'development',
@@ -75,7 +75,7 @@ module.exports = function(webpackEnv) {
       // There will be one main bundle.
       // In development, it does not produce real files.
       filename: 'bundle.js',
-      publicPath: publicPath,
+      publicPath: '/',
       libraryTarget: 'commonjs2',
       // Point sourcemap entries to original disk location (format as URL on Windows)
       devtoolModuleFilenameTemplate: isEnvProduction
@@ -371,6 +371,7 @@ module.exports = function(webpackEnv) {
     performance: false,
     // exclude all node_modules from bundle unless whitelisted.
     externals: [
+      nodeExternals(),
       nodeExternals({
       modulesFromFile: true,
       whitelist: [],
