@@ -5,7 +5,10 @@ const path = require('path');
 const nodeConfig = (projectDir=null, sessionDir=null) => {
   if (!projectDir && !sessionDir) { return null; }
   const result = { paths: {} };
-  if (projectDir) { result.paths.project = path.join(projectDir, '.kinvey'); }
+  if (projectDir) {
+    result.paths.project = path.join(projectDir, '.kinvey');
+    result.paths.package = path.join(projectDir, 'build');
+  }
   if (sessionDir) { result.paths.session = path.join(sessionDir, '.kinvey-cli'); }
   return JSON.stringify(result);
 }
