@@ -24,6 +24,7 @@ if (process.env.SKIP_PREFLIGHT_CHECK !== 'true') {
 // @remove-on-eject-end
 
 const fs = require('fs');
+const path = require('path');
 const chalk = require('chalk');
 const webpack = require('webpack');
 const checkRequiredFiles = require('./utils/checkRequiredFiles');
