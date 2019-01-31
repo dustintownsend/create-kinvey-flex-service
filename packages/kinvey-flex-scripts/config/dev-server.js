@@ -23,7 +23,7 @@ const DevServer = (compiler, config, port, isInteractive) => {
   app.use(devMiddleware);
 
   devMiddleware.waitUntilValid(() => {
-      devMiddleware.close(); // TODO: remove close() when hot module reloading works
+      // devMiddleware.close(); // TODO: remove close() when hot module reloading works
       const filepath = path.join(paths.appPath,'dist', config.output.filename);
       const bundle = devMiddleware.fileSystem.readFileSync(filepath,'utf-8');
       requireFromString(bundle);
@@ -34,7 +34,6 @@ const DevServer = (compiler, config, port, isInteractive) => {
 
 //   // @ts-ignore
   const pkgJson = require(paths.appPackageJson);
-  console.log(pkgJson)
 
   const LOCAL_FLEX_URL = 'http://localhost:10001';
 
@@ -137,9 +136,13 @@ const DevServer = (compiler, config, port, isInteractive) => {
   }
 
   const serviceDiscovery = () => {
+
       request.post(`${LOCAL_FLEX_URL}/_command/discover`, (err, response, body) => {
           const json = JSON.parse(body);
           const { dataLink, businessLogic, auth } = json;
+
+        //   readline.cursorTo(process.stdout, -1);
+            // process.stdout.write(`waiting ...`);
 
           dataLink.serviceObjects.forEach((serviceObject) => {
               const url = `${LOCAL_FLEX_URL}/${serviceObject}`;
@@ -148,6 +151,7 @@ const DevServer = (compiler, config, port, isInteractive) => {
 
           businessLogic.handlers.forEach((handler) => {
               const url = `${LOCAL_FLEX_URL}/_flexFunctions/${handler}`;
+              process.stdout.clearLine();
               console.log(url);
           });
 

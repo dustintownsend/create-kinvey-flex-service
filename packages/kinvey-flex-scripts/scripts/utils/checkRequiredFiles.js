@@ -5,7 +5,6 @@ var path = require('path');
 var chalk = require('chalk');
 
 function checkRequiredFiles(files) {
-  console.log('checkRequiredFiles', files);
   var currentFilePath;
   try {
     files.forEach(filePath => {

@@ -198,5 +198,4 @@ module.exports = function(
     );
   }
   console.log();
-  console.log('Happy hacking!');
 }

@@ -61,18 +61,6 @@ module.exports = function(webpackEnv) {
     // These are the "entry points" to our application.
     // This means they will be the "root" imports that are included in JS bundle.
     entry: [
-      // Include an alternative client for WebpackDevServer. A client's job is to
-      // connect to WebpackDevServer by a socket and get notified about changes.
-      // When you save a file, the client will either apply hot updates (in case
-      // of CSS changes), or refresh the page (in case of JS changes). When you
-      // make a syntax error, this client will display a syntax error overlay.
-      // Note: instead of the default WebpackDevServer client, we use a custom one
-      // to bring better experience for Create React App users. You can replace
-      // the line below with these two lines if you prefer the stock client:
-      // require.resolve('webpack-dev-server/client') + '?/',
-      // require.resolve('webpack/hot/dev-server'),
-      // isEnvDevelopment &&
-      //   require.resolve('./utils/webpackHotDevClient'),
       // Finally, this is your app's code:
       paths.appIndexJs,
       // We include the app code last so that if there is a runtime error during
@@ -84,18 +72,9 @@ module.exports = function(webpackEnv) {
       path: isEnvProduction ? paths.appBuild : undefined,
       // Add /* filename */ comments to generated require()s in the output.
       // pathinfo: isEnvDevelopment,
-      // There will be one main bundle, and one file per asynchronous chunk.
+      // There will be one main bundle.
       // In development, it does not produce real files.
       filename: 'bundle.js',
-      // filename: isEnvProduction
-      //   ? 'static/js/[name].[chunkhash:8].js'
-      //   : isEnvDevelopment && 'static/js/bundle.js',
-      // There are also additional JS chunk files if you use code splitting.
-      // chunkFilename: isEnvProduction
-      //   ? 'static/js/[name].[chunkhash:8].chunk.js'
-      //   : isEnvDevelopment && 'static/js/[name].chunk.js',
-      // We inferred the "public path" (such as / or /my-project) from homepage.
-      // We use "/" in development.
       publicPath: publicPath,
       libraryTarget: 'commonjs2',
       // Point sourcemap entries to original disk location (format as URL on Windows)
@@ -108,7 +87,7 @@ module.exports = function(webpackEnv) {
           (info => path.resolve(info.absoluteResourcePath).replace(/\\/g, '/')),
     },
     optimization: {
-      minimize: !isEnvProduction,
+      minimize: isEnvProduction,
       minimizer: [
         // This is only used in production mode
         new TerserPlugin({
@@ -135,9 +114,6 @@ module.exports = function(webpackEnv) {
               // https://github.com/terser-js/terser/issues/120
               inline: 2,
             },
-            // mangle: {
-            //   safari10: true,
-            // },
             output: {
               ecma: 5,
               comments: false,
@@ -157,10 +133,10 @@ module.exports = function(webpackEnv) {
       // Automatically split vendor and commons
       // https://twitter.com/wSokra/status/969633336732905474
       // https://medium.com/webpack/webpack-4-code-splitting-chunk-graph-and-the-splitchunks-optimization-be739a861366
-      splitChunks: {
-        chunks: 'all',
-        name: false,
-      },
+      // splitChunks: {
+      //   chunks: 'all',
+      //   name: false,
+      // },
     },
     resolve: {
       // This allows you to set a fallback for where Webpack should look for modules.
@@ -394,8 +370,10 @@ module.exports = function(webpackEnv) {
     // our own hints via the FileSizeReporter
     performance: false,
     // exclude all node_modules from bundle unless whitelisted.
-    externals: [nodeExternals({
-      whitelist: []
+    externals: [
+      nodeExternals({
+      modulesFromFile: true,
+      whitelist: [],
     })],
   };
 };
