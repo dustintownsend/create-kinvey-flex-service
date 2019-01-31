@@ -4,11 +4,9 @@ const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
 
-// const resolve = require('resolve');
-const PnpWebpackPlugin = require('pnp-webpack-plugin');
+// const PnpWebpackPlugin = require('pnp-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
-// const NodemonPlugin = require('nodemon-webpack-plugin');
 const WatchMissingNodeModulesPlugin = require('./utils/WatchMissingNodeModulesPlugin');
 const ModuleScopePlugin = require('./utils/ModuleScopePlugin');
 const paths = require('./paths');
@@ -17,17 +15,10 @@ const ModuleNotFoundPlugin = require('./utils/ModuleNotFoundPlugin');
 // const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin-alt');
 // const typescriptFormatter = require('./utils/typescriptFormatter');
 
-// @remove-on-eject-begin
-const getCacheIdentifier = require('./utils/getCacheIdentifier');
-// @remove-on-eject-end
-
 const nodeExternals = require('webpack-node-externals');
 
 // Source maps are resource heavy and can cause out of memory issue for large source files.
 const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
-// Some apps do not need the benefits of saving a web request, so not inlining the chunk
-// makes for a smoother build process.
-// const shouldInlineRuntimeChunk = process.env.INLINE_RUNTIME_CHUNK !== 'false';
 
 // Check if TypeScript is setup
 const useTypeScript = fs.existsSync(paths.appTsConfig);
@@ -122,45 +113,45 @@ module.exports = function(webpackEnv) {
         // This is only used in production mode
         new TerserPlugin({
           terserOptions: {
-      //       parse: {
-      //         // we want terser to parse ecma 8 code. However, we don't want it
-      //         // to apply any minfication steps that turns valid ecma 5 code
-      //         // into invalid ecma 5 code. This is why the 'compress' and 'output'
-      //         // sections only apply transformations that are ecma 5 safe
-      //         // https://github.com/facebook/create-react-app/pull/4234
-      //         ecma: 8,
-      //       },
-      //       compress: {
-      //         ecma: 5,
-      //         warnings: false,
-      //         // Disabled because of an issue with Uglify breaking seemingly valid code:
-      //         // https://github.com/facebook/create-react-app/issues/2376
-      //         // Pending further investigation:
-      //         // https://github.com/mishoo/UglifyJS2/issues/2011
-      //         comparisons: false,
-      //         // Disabled because of an issue with Terser breaking valid code:
-      //         // https://github.com/facebook/create-react-app/issues/5250
-      //         // Pending futher investigation:
-      //         // https://github.com/terser-js/terser/issues/120
-      //         inline: 2,
-      //       },
-      //       mangle: {
-      //         safari10: true,
-      //       },
-      //       output: {
-      //         ecma: 5,
-      //         comments: false,
-      //         // Turned on because emoji and regex is not minified properly using default
-      //         // https://github.com/facebook/create-react-app/issues/2488
-      //         ascii_only: true,
-      //       },
+            parse: {
+              // we want terser to parse ecma 8 code. However, we don't want it
+              // to apply any minfication steps that turns valid ecma 5 code
+              // into invalid ecma 5 code. This is why the 'compress' and 'output'
+              // sections only apply transformations that are ecma 5 safe
+              // https://github.com/facebook/create-react-app/pull/4234
+              ecma: 8,
+            },
+            compress: {
+              ecma: 5,
+              warnings: false,
+              // Disabled because of an issue with Uglify breaking seemingly valid code:
+              // https://github.com/facebook/create-react-app/issues/2376
+              // Pending further investigation:
+              // https://github.com/mishoo/UglifyJS2/issues/2011
+              comparisons: false,
+              // Disabled because of an issue with Terser breaking valid code:
+              // https://github.com/facebook/create-react-app/issues/5250
+              // Pending futher investigation:
+              // https://github.com/terser-js/terser/issues/120
+              inline: 2,
+            },
+            // mangle: {
+            //   safari10: true,
+            // },
+            output: {
+              ecma: 5,
+              comments: false,
+              // Turned on because emoji and regex is not minified properly using default
+              // https://github.com/facebook/create-react-app/issues/2488
+              ascii_only: true,
+            },
           },
-      //     // Use multi-process parallel running to improve the build speed
-      //     // Default number of concurrent runs: os.cpus().length - 1
-      //     parallel: true,
-      //     // Enable file caching
-      //     cache: true,
-      //     sourceMap: shouldUseSourceMap,
+          // Use multi-process parallel running to improve the build speed
+          // Default number of concurrent runs: os.cpus().length - 1
+          parallel: true,
+          // Enable file caching
+          cache: true,
+          sourceMap: shouldUseSourceMap,
         }),
       ],
       // Automatically split vendor and commons
@@ -170,9 +161,6 @@ module.exports = function(webpackEnv) {
         chunks: 'all',
         name: false,
       },
-      // Keep the runtime chunk separated to enable long term caching
-      // https://twitter.com/wSokra/status/969679223278505985
-      // runtimeChunk: true,
     },
     resolve: {
       // This allows you to set a fallback for where Webpack should look for modules.
@@ -193,9 +181,6 @@ module.exports = function(webpackEnv) {
         .map(ext => `.${ext}`)
         .filter(ext => useTypeScript || !ext.includes('ts')),
       // alias: {
-        // // Support React Native Web
-        // // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
-        // 'react-native': 'react-native-web',
       // },
       plugins: [
         // Adds support for installing with Plug'n'Play, leading to faster installs and adding
@@ -234,8 +219,7 @@ module.exports = function(webpackEnv) {
                 eslintPath: require.resolve('eslint'),
                 // @remove-on-eject-begin
                 baseConfig: {
-                  extends: [require.resolve('./eslint-config-kinvey-flex-service.js'), paths.eslintConfig],
-                  // extends: [require.resolve('eslint-config-react-app')],
+                  extends: [require.resolve('eslint-config-kinvey-flex-service'), paths.eslintConfig],
 
                 },
                 ignore: false,
@@ -271,31 +255,13 @@ module.exports = function(webpackEnv) {
               include: paths.appSrc,
               loader: require.resolve('babel-loader'),
               options: {
-                // customize: require.resolve(
-                //   'babel-preset-react-app/webpack-overrides'
-                // ),
+                customize: require.resolve(
+                  'babel-preset-kinvey-flex-service/webpack-overrides'
+                ),
                 // @remove-on-eject-begin
                 // babelrc: false,
                 // configFile: false,
-                // presets: [require.resolve('babel-preset-react-app')],
-                presets: [require.resolve('./babel-preset-kinvey-flex-service')],
-                // Make sure we have a unique cache identifier, erring on the
-                // side of caution.
-                // We remove this when the user ejects because the default
-                // is sane and uses Babel options. Instead of options, we use
-                // the react-scripts and babel-preset-react-app versions.
-                // cacheIdentifier: getCacheIdentifier(
-                //   isEnvProduction
-                //     ? 'production'
-                //     : isEnvDevelopment && 'development',
-                //   [
-                //     'babel-plugin-named-asset-import',
-                //     'babel-preset-react-app',
-                //     // 'react-dev-utils',
-                //     // 'react-scripts',
-                //     'kinvey-flex-scripts',
-                //   ]
-                // ),
+                presets: [require.resolve('babel-preset-kinvey-flex-service')],
                 // This is a feature of `babel-loader` for webpack (not Babel itself).
                 // It enables caching results in ./node_modules/.cache/babel-loader/
                 // directory for faster rebuilds.
@@ -316,26 +282,12 @@ module.exports = function(webpackEnv) {
                 compact: false,
                 presets: [
                   [
-                    require.resolve('babel-preset-react-app/dependencies'),
+                    require.resolve('babel-preset-kinvey-flex-service/dependencies'),
                     { helpers: true },
                   ],
                 ],
                 cacheDirectory: true,
                 cacheCompression: isEnvProduction,
-                // @remove-on-eject-begin
-                cacheIdentifier: getCacheIdentifier(
-                  isEnvProduction
-                    ? 'production'
-                    : isEnvDevelopment && 'development',
-                  [
-                    // 'babel-plugin-named-asset-import',
-                    // 'babel-preset-react-app',
-                    // 'react-dev-utils',
-                    // 'react-scripts',
-                    'kinvey-flex-scripts'
-                  ]
-                ),
-                // @remove-on-eject-end
                 // If an error happens in a package, it's possible to be
                 // because it was compiled. Thus, we don't want the browser
                 // debugger to show the original code. Instead, the code
@@ -366,21 +318,6 @@ module.exports = function(webpackEnv) {
       ],
     },
     plugins: [
-      // isEnvDevelopment && new NodemonPlugin({
-      //   watch: path.resolve('./build'),
-      // }),
-      // Inlines the webpack runtime script. This script is too small to warrant
-      // a network request.
-      // isEnvProduction &&
-      //   shouldInlineRuntimeChunk &&
-      //   new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/runtime~.+[.]js/]),
-      // Makes some environment variables available in index.html.
-      // The public URL is available as %PUBLIC_URL% in index.html, e.g.:
-      // <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
-      // In production, it will be an empty string unless you specify "homepage"
-      // in `package.json`, in which case it will be the pathname of that URL.
-      // In development, this will be an empty string.
-      // new InterpolateHtmlPlugin(HtmlWebpackPlugin, env.raw),
       // This gives some necessary context to module not found errors, such as
       // the requesting resource.
       new ModuleNotFoundPlugin(paths.appPath),
@@ -390,8 +327,10 @@ module.exports = function(webpackEnv) {
       // during a production build.
       // Otherwise React will be compiled in the very slow development mode.
       new webpack.DefinePlugin(env.stringified),
+
       // This is necessary to emit hot updates (currently CSS only):
-      isEnvDevelopment && new webpack.HotModuleReplacementPlugin(),
+      // isEnvDevelopment && new webpack.HotModuleReplacementPlugin(),
+
       // Watcher doesn't work well if you mistype casing in a path so we use
       // a plugin that prints an error when you attempt to do this.
       // See https://github.com/facebook/create-react-app/issues/240
@@ -402,19 +341,14 @@ module.exports = function(webpackEnv) {
       // See https://github.com/facebook/create-react-app/issues/186
       isEnvDevelopment &&
         new WatchMissingNodeModulesPlugin(paths.appNodeModules),
-      // Generate a manifest file which contains a mapping of all asset filenames
-      // to their corresponding output file so that tools can pick it up without
-      // having to parse `index.html`.
-      // new ManifestPlugin({
-      //   fileName: 'asset-manifest.json',
-      //   publicPath: publicPath,
-      // }),
+
       // Moment.js is an extremely popular library that bundles large locale files
       // by default due to how Webpack interprets its code. This is a practical
       // solution that requires the user to opt into importing specific locales.
       // https://github.com/jmblog/how-to-optimize-momentjs-with-webpack
       // You can remove this if you don't use Moment.js:
-      new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+      // new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+
       // TypeScript type checking
       // useTypeScript &&
       //   new ForkTsCheckerWebpackPlugin({
