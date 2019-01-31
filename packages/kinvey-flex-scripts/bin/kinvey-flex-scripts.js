@@ -21,7 +21,6 @@ const nodeArgs = scriptIndex > 0 ? args.slice(0, scriptIndex) : [];
 let nodeCmd = 'node';
 if (script === 'start') {
   nodeCmd = 'nodemon';
-  console.log(script, nodeCmd);
 }
 
 switch (script) {

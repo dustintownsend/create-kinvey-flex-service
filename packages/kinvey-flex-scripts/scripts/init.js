@@ -23,25 +23,14 @@ module.exports = function(
   originalDirectory,
   template
 ) {
-  console.log('init',svcPath,
-  svcName,
-  verbose,
-  originalDirectory,
-  template)
   const ownPath = path.dirname(
     require.resolve(path.join(__dirname, '..', 'package.json'))
   );
-  console.log('ownPath', ownPath);
 
   const svcPackage = require(path.join(svcPath, 'package.json'));
   const useYarn = fs.existsSync(path.join(svcPath, 'yarn.lock'));
 
-  console.log('svcPackage', svcPackage);
-  console.log('svcPackage.dependencies', svcPackage.dependencies);
-  // Copy over some of the devDependencies
   svcPackage.dependencies = svcPackage.dependencies || {};
-  console.log('svcPackage.dependencies', svcPackage.dependencies);
-
 
   const useTypeScript = svcPackage.dependencies['typescript'] != null;
 

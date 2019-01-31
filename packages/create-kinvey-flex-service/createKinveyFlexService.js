@@ -371,21 +371,7 @@ function run(
   usePnp,
   useTypescript
 ) {
-  console.log('run',root,
-  svcName,
-  version,
-  verbose,
-  originalDirectory,
-  template,
-  useYarn,
-  usePnp,
-  useTypescript)
   const packageToInstall = getInstallPackage(version, originalDirectory);
-  // const allDependencies = ['kinvey-flex-sdk', packageToInstall];
-  // const allDependencies = {
-  //   deps: ['kinvey-flex-sdk'],
-  //   devDeps: [packageToInstall],
-  // }
   const allDependencies = [packageToInstall];
   if (useTypescript) {
     // TODO: get user's node version instead of installing latest
@@ -408,13 +394,8 @@ function run(
     .then(info => {
       const isOnline = info.isOnline;
       const packageName = info.packageName;
-      // console.log(
-      //   `Installing ${chalk.cyan('kinvey-flex-sdk')}
-      //   )}, and ${chalk.cyan(packageName)}...`
-      // );
       console.log(`Installing ${chalk.cyan(packageName)}...`);
       console.log();
-      // return packageName;
 
       return install(
         root,
