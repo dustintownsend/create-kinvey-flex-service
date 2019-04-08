@@ -93,6 +93,7 @@ module.exports = function(
     build: 'kinvey-flex-scripts build',
     // test: 'kinvey-flex-scripts test',
     // eject: 'kinvey-flex-scripts eject',
+    predeploy: 'kinvey-flex-scripts build',
     deploy: 'kinvey-flex-scripts deploy'
   };
 
