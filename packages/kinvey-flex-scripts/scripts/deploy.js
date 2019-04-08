@@ -72,12 +72,12 @@ if (!fs.existsSync(kinveyProjectConfig)) {
 
     if (deployStatus) {
       let {
-        status,
-        version,
+        status='NEW',
+        version='0.0',
         deployment: {
           status: deploymentStatus,
           version: deploymentVersion,
-        }
+        }={ status: 'NEW', version: '0.0' }
       } = deployStatus;
 
       status = status.toUpperCase();
