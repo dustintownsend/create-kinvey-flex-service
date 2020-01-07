@@ -1,6 +1,6 @@
 {
   "name": "kinvey-flex-scripts",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "main": "index.js",
   "license": "MIT",
   "bin": {
@@ -33,7 +33,7 @@
     "identity-obj-proxy": "^3.0.0",
     "inquirer": "^6.2.1",
     "is-root": "^2.0.0",
-    "kinvey-cli-wrapper": "^0.2.0",
+    "kinvey-cli-wrapper": "^0.2.1",
     "lodash.merge": "^4.6.1",
     "nodemon": "^1.18.9",
     "pkg-up": "^2.0.0",
