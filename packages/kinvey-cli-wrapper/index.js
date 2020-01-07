@@ -179,14 +179,14 @@ function Wrapper() {
    * @param {Object?} options
    * @returns {Promise}
    */
-  this.applyApp = (app, file, options={}) => kinveyAppApply({ app, file });
+  this.applyApp = (app, file, options={}) => kinveyAppApply({ app, ...options }, file);
 
   /**
    *
    * @param {Object?} options
    * @returns {Promise}
    */
-  this.exportApp = (app, file, options={}) => kinveyAppExport({ app, file });
+  this.exportApp = (app, file, options={}) => kinveyAppExport({ app, ...options }, file);
 
   /**
    *
@@ -228,14 +228,14 @@ function Wrapper() {
    * @param {Object?} options
    * @returns {Promise}
    */
-  this.applyAppEnv = (env, app=null, file, options={}) => kinveyAppEnvApply({ app, env, file });
+  this.applyAppEnv = (env, app=null, file, options={}) => kinveyAppEnvApply({ app, env, ...options }, file);
 
   /**
    *
    * @param {Object?} options
    * @returns {Promise}
    */
-  this.exportEnvApp = (env, app=null, file, options={}) => kinveyAppEnvExport({ app, env, file });
+  this.exportAppEnv = (env, app, file, options = {}) => kinveyAppEnvExport({ env, app, ...options }, file);
 
   /**
    *

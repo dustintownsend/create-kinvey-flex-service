@@ -43,8 +43,8 @@ module.exports.kinveyAppShow = (options) => kinveyApp(['show'], options);
 module.exports.kinveyAppUse = (options, app) => kinveyApp(['use', app], options);
 module.exports.kinveyAppCreate = (options, app) => kinveyApp(['create', app], options);
 module.exports.kinveyAppDelete = (options) => kinveyApp(['delete'], options);
-module.exports.kinveyAppExport = options => kinveyApp(['export'], options);
-module.exports.kinveyAppApply = options => kinveyApp(['apply'], options);
+module.exports.kinveyAppExport = (options, file) => kinveyApp(['export', '--file', file], options);
+module.exports.kinveyAppApply = (options, file) => kinveyApp(['apply', '--file', file], options);
 
 const kinveyAppEnv = (args, options) => kinveyCliCommand(['appenv', ...args], options);
 module.exports.kinveyAppEnvList = (options) => kinveyAppEnv(['list'], options);
@@ -52,8 +52,8 @@ module.exports.kinveyAppEnvShow = (options) => kinveyAppEnv(['show'], options);
 module.exports.kinveyAppEnvUse = (options, env) => kinveyAppEnv(['use', env], options);
 module.exports.kinveyAppEnvCreate = (options, appenv) => kinveyAppEnv(['create', appenv], options);
 module.exports.kinveyAppEnvDelete = (options) => kinveyAppEnv(['delete'], options);
-module.exports.kinveyAppEnvExport = (options) => kinveyAppEnv(['export'], options);
-module.exports.kinveyAppEnvApply = (options) => kinveyAppEnv(['apply'], options);
+module.exports.kinveyAppEnvExport = (options, file) => kinveyAppEnv(['export', '--file', file], options);
+module.exports.kinveyAppEnvApply = (options, file) => kinveyAppEnv(['apply', '--file', file], options);
 
 const kinveyColl = (args, options) => kinveyCliCommand(['coll', ...args], options);
 module.exports.kinveyCollList = (options) => kinveyColl(['list'], options);
