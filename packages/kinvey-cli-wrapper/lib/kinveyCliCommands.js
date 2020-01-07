@@ -30,6 +30,7 @@ module.exports.kinveyProfileList = (options) => kinveyProfile(['list'], options)
 module.exports.kinveyProfileUse = (options, profileName) => kinveyProfile(['use', profileName], options);
 module.exports.kinveyProfileShow = (options, profileName) => kinveyProfile(['show', profileName], options);
 module.exports.kinveyProfileLogin = (options, profileName) => kinveyProfile(['login', profileName], loginProfileOptions(options));
+module.exports.kinveyProfileDelete = (options, profileName) => kinveyProfile(['delete', profileName], options);
 
 const kinveyOrg = (args, options) => kinveyCliCommand(['org', ...args], options);
 module.exports.kinveyOrgList = (options) => kinveyOrg(['list'], options);
@@ -59,6 +60,11 @@ module.exports.kinveyCollList = (options) => kinveyColl(['list'], options);
 module.exports.kinveyCollCreate = (options, name) => kinveyColl(['create', name], options); // untested
 module.exports.kinveyCollDelete = (options, name) => kinveyColl(['delete', name], options); // untested
 
+const kinveyService = (args, options) => kinveyCliCommand(['service', ...args], options);
+module.exports.kinveyServiceCreate = (options, name) => kinveyService(['create', name], options);
+module.exports.kinveyServiceApply = (options) => kinveyService(['apply'], options);
+module.exports.kinveyServiceExport = (options) => kinveyService(['export'], options);
+
 const kinveyFlex = (args, options) => kinveyCliCommand(['flex', ...args], options);
 module.exports.kinveyFlexCreate = (options, name) => kinveyFlex(['create', name], options);
 module.exports.kinveyFlexDeploy = (options) => kinveyFlex(['deploy'], options);
@@ -71,7 +77,16 @@ module.exports.kinveyFlexUpdate = (options) => kinveyFlex(['update'], options);
 module.exports.kinveyFlexRecycle = (options) => kinveyFlex(['recycle'], options);
 module.exports.kinveyFlexDelete = (options) => kinveyFlex(['delete'], options);
 module.exports.kinveyFlexClear = (options) => kinveyFlex(['clear'], options);
-
 module.exports.kinveyFlexInit = (projectPath, profileName, domain, domainEntityId, serviceId, serviceName, svcEnvId, schemaVersion) => new Promise((resolve) => {
   flexInit(projectPath, profileName, domain, domainEntityId, serviceId, serviceName, svcEnvId, schemaVersion, () => resolve('SUCCESS'));
 });
+
+const kinveyWebsite = (args, options) => kinveyCliCommand(['website', ...args], options);
+module.exports.kinveyWebsiteCreate = (options, name) => kinveyWebsite(['create', name], options);
+module.exports.kinveyWebsiteList = (options) => kinveyWebsite(['list'], options);
+module.exports.kinveyWebsiteShow = options => kinveyWebsite(['show'], options);
+module.exports.kinveyWebsiteDeploy = options => kinveyWebsite(['deploy'], options);
+module.exports.kinveyWebsitePublish = options => kinveyWebsite(['publish'], options);
+module.exports.kinveyWebsiteStatus = options => kinveyWebsite(['status'], options);
+module.exports.kinveyWebsiteUnpublish = options => kinveyWebsite(['unpublish'], options);
+module.exports.kinveyWebsiteDelete = options => kinveyWebsite(['delete'], options);
