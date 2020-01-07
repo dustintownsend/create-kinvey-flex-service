@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "execa": "^1.0.0",
-    "kinvey-cli": "4.1.1"
+    "execa": "^4.0.0",
+    "kinvey-cli": "^5.0.0"
   }
 }
