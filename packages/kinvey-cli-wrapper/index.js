@@ -15,11 +15,15 @@ const {
   kinveyAppUse,
   kinveyAppCreate,
   kinveyAppDelete,
+  kinveyAppApply,
+  kinveyAppExport,
   kinveyAppEnvList,
   kinveyAppEnvShow,
   kinveyAppEnvUse,
   kinveyAppEnvCreate,
   kinveyAppEnvDelete,
+  kinveyAppEnvApply,
+  kinveyAppEnvExport,
   kinveyCollList,
   kinveyCollCreate,
   kinveyCollDelete,
@@ -175,6 +179,20 @@ function Wrapper() {
    * @param {Object?} options
    * @returns {Promise}
    */
+  this.applyApp = (app, file, options={}) => kinveyAppApply({ app, file });
+
+  /**
+   *
+   * @param {Object?} options
+   * @returns {Promise}
+   */
+  this.exportApp = (app, file, options={}) => kinveyAppExport({ app, file });
+
+  /**
+   *
+   * @param {Object?} options
+   * @returns {Promise}
+   */
   this.listAppEnvs = (app=null, options={}) => kinveyAppEnvList({ app, ...options });
 
   /**
@@ -204,6 +222,20 @@ function Wrapper() {
    * @returns {Promise}
    */
   this.deleteAppEnv = (env, app=null, options={}) => kinveyAppEnvDelete({ app, env, noPrompt: true, ...options });
+
+  /**
+   *
+   * @param {Object?} options
+   * @returns {Promise}
+   */
+  this.applyAppEnv = (env, app=null, file, options={}) => kinveyAppEnvApply({ app, env, file });
+
+  /**
+   *
+   * @param {Object?} options
+   * @returns {Promise}
+   */
+  this.exportEnvApp = (env, app=null, file, options={}) => kinveyAppEnvExport({ app, env, file });
 
   /**
    *
