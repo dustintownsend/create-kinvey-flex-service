@@ -5,6 +5,6 @@
   "license": "MIT",
   "dependencies": {
     "execa": "^4.0.0",
-    "kinvey-cli": "^5.0.0"
+    "kinvey-cli": "^6.1.3"
   }
 }
