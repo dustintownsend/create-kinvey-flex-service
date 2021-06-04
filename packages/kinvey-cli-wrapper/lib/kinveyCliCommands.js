@@ -36,6 +36,8 @@ const kinveyOrg = (args, options) => kinveyCliCommand(['org', ...args], options)
 module.exports.kinveyOrgList = (options) => kinveyOrg(['list'], options);
 module.exports.kinveyOrgShow = (options) => kinveyOrg(['show'], options);
 module.exports.kinveyOrgUse = (options, org) => kinveyOrg(['use', org], options);
+module.exports.kinveyOrgApply = (options, file) => kinveyOrg(['apply', '--file', file], options);
+module.exports.kinveyOrgExport = (options, file) => kinveyOrg(['export', '--file', file], options);
 
 const kinveyApp = (args, options) => kinveyCliCommand(['app', ...args], options);
 module.exports.kinveyAppList = (options) => kinveyApp(['list'], options);

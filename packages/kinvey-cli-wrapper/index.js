@@ -7,9 +7,12 @@ const {
   kinveyProfileUse,
   kinveyProfileShow,
   kinveyProfileLogin,
+  kinveyProfileDelete,
   kinveyOrgList,
   kinveyOrgShow,
   kinveyOrgUse,
+  kinveyOrgApply,
+  kinveyOrgExport,
   kinveyAppList,
   kinveyAppShow,
   kinveyAppUse,
@@ -119,6 +122,15 @@ function Wrapper() {
     kinveyProfileUse({ ...options }, profileName);
 
   /**
+   * Delete current profile or profile of profileName, if set.
+   * @param {String} profileName
+   * @param {Object?} options
+   * @returns {Promise}
+   */
+  this.deleteProfile = (profileName=null, options={}) =>
+    kinveyProfileDelete({ ...options}, profileName);
+
+  /**
    *
    * @param {Object?} options
    * @returns {Promise}
@@ -133,11 +145,26 @@ function Wrapper() {
   this.showOrg = (org=null, options={}) => kinveyOrgShow({ org, ...options });
 
   /**
-   *
+   * Set the active/current organization to use. Can specify an organization by ID or name.
+   * @param {String} org
    * @param {Object?} options
    * @returns {Promise}
    */
   this.useOrg = (org, options={}) => kinveyOrgUse(options, org);
+
+  /**
+   *
+   * @param {Object?} options
+   * @returns {Promise}
+   */
+  this.applyOrg = (file, org=null, options={}) => kinveyOrgApply({ org, ...options}, file);
+
+  /**
+   *
+   * @param {Object?} options
+   * @returns {Promise}
+   */
+  this.exportOrg = (file, org=null, options={}) => kinveyOrgExport({ org, ...options }, file);
 
   /**
    *
