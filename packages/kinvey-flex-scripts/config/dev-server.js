@@ -47,6 +47,7 @@ const DevServer = (compiler, config, port, isInteractive) => {
       KINVEY_USER_NAME,
       KINVEY_USER_ID,
       FLEX_SHARED_SECRET,
+      KINVEY_CUSTOM_REQUEST_PROPS,
   } = process.env;
 
   const KINVEY_CLIENT_APP_VERSION = pkgJson.version;
@@ -65,13 +66,20 @@ const DevServer = (compiler, config, port, isInteractive) => {
       KINVEY_AUTH_HEADER = `Basic ${Buffer.from(`${KINVEY_APP_SECRET}:${KINVEY_MASTER_SECRET}`).toString('base64')}`;
   }
 
+  let KINVEY_ORIGINAL_REQUEST_HEADERS = {
+    "x-kinvey-api-version": KINVEY_API_VERSION || "3",
+    authorization: KINVEY_AUTH_HEADER,
+    "x-kinvey-client-app-version": KINVEY_CLIENT_APP_VERSION || "1",
+    "host": (KINVEY_BAAS_URL || 'baas').replace('https://', '')
+  }
+
+  if (KINVEY_CUSTOM_REQUEST_PROPS) {
+    KINVEY_ORIGINAL_REQUEST_HEADERS['X-Kinvey-Custom-Request-Properties'] = JSON.parse(KINVEY_CUSTOM_REQUEST_PROPS);
+  }
+
   let FLEX_LOCAL_HEADERS = {
       'X-Kinvey-App-Metadata' : JSON.stringify(appMetadata),
-      'X-Kinvey-Original-Request-Headers': JSON.stringify({
-          "x-kinvey-api-version": KINVEY_API_VERSION || "3",
-          authorization: KINVEY_AUTH_HEADER,
-          "x-kinvey-client-app-version": KINVEY_CLIENT_APP_VERSION || "1",
-          "host": (KINVEY_BAAS_URL || 'baas').replace('https://', '')}),
+      'X-Kinvey-Original-Request-Headers': JSON.stringify(KINVEY_ORIGINAL_REQUEST_HEADERS),
       'X-Kinvey-Username': KINVEY_USER_NAME,
       'X-Kinvey-User-Id': KINVEY_USER_ID,
       'Content-Type': 'application/json',
